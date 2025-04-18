@@ -30,6 +30,10 @@ def preprocess_data(X: pd.DataFrame) -> tuple:
     # Fit the preprocessor
     X_pre = pre.fit_transform(X)
 
+    X_pre.columns = X_pre.columns.astype(str).str.replace(r"[\[\]<>]", "_", regex=True)
+
+
+
     # Return the values of X_pre and pre
     return X_pre, pre
 
@@ -71,4 +75,4 @@ def algo_evaluation(models: list, xtrain, ytrain, xtest, ytest):
     res_df = pd.DataFrame(res)
     sort_df = res_df.sort_values(by="f1_cv", ascending=False).reset_index(drop=True).round(4)
     best_model = sort_df.loc[0, "model"]
-    return sort_df, best_model 
+    return sort_df, best_model
